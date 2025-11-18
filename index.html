@@ -1,3 +1,155 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Пранк — снег</title>
+<style>
+  * { box-sizing: border-box; }
+  html,body { height:100%; margin:0; padding:0; overflow:hidden; font-family: "Segoe UI", Roboto, sans-serif; background:none; }
+
+  .wrapper {
+    position: relative;
+    width:100%;
+    height:100%;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    overflow:visible;
+    cursor:pointer;
+  }
+
+  /* фон (размытая картинка) */
+  .background {
+    position:absolute; inset:0;
+    background-image: url('image.jpg');
+    background-size:cover;
+    background-position:center;
+    filter: blur(25px) brightness(0.9);
+    transform: scale(1.08);
+    z-index: -3;
+  }
+
+  .overlay {
+    position:absolute; inset:0;
+    background: rgba(0,0,0,0.18);
+    z-index: -2;
+  }
+
+  /* круг с рамкой */
+  .circle-img {
+    width: 230px;
+    height: 230px;
+    border-radius: 50%;
+    background-image: url('image.jpg');
+    background-size: cover;
+    background-position: center;
+    border: 6px solid rgba(255,255,255,0.85);
+    box-shadow: 0 0 40px rgba(255,255,255,0.6);
+    transition: transform .28s ease, box-shadow .28s ease;
+    z-index: 1;
+  }
+
+  .circle-img:hover { transform: scale(1.07); box-shadow: 0 0 60px rgba(255,255,255,0.85); }
+
+  /* стиль кнопки */
+  .telegram-btn {
+    position: absolute;
+    bottom: 42px;
+    padding: 12px 26px;
+    font-size: 18px;
+    font-weight:600;
+    background: linear-gradient(135deg, #ffffffdd, #f7f7f7);
+    border: 2px solid rgba(255,255,255,0.75);
+    border-radius: 40px;
+    backdrop-filter: blur(6px);
+    box-shadow: 0 6px 18px rgba(0,0,0,0.15);
+    color: #111;
+    text-decoration: none;
+    transition: transform .18s ease, box-shadow .18s ease;
+    z-index: 2;
+  }
+  .telegram-btn:active { transform: scale(.98); }
+  .telegram-btn:hover { transform: scale(1.04); box-shadow: 0 10px 30px rgba(0,0,0,0.18); }
+
+  /* снежинка */
+  .snowflake {
+    position: fixed;
+    top: -50px;
+    color: white;
+    pointer-events: none;
+    user-select: none;
+    z-index: 9999;
+    will-change: transform, opacity;
+    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.25));
+  }
+
+  /* Информационная надпись (удаляется после старта) */
+  .hint {
+    position: absolute;
+    top: 16px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0,0,0,0.45);
+    color: #fff;
+    padding: 8px 12px;
+    border-radius: 999px;
+    font-size: 13px;
+    z-index: 5;
+    backdrop-filter: blur(4px);
+  }
+
+  /* Маленький лог для ошибок (видим только если нужно) */
+  .log {
+    position: absolute;
+    left: 12px;
+    bottom: 12px;
+    font-size:12px;
+    color:#fff;
+    background: rgba(0,0,0,0.45);
+    padding:6px 8px;
+    border-radius:6px;
+    z-index:5;
+    display:none;
+  }
+</style>
+</head>
+<body>
+  <div class="wrapper" id="wrapper">
+    <div class="background"></div>
+    <div class="overlay"></div>
+
+    <div class="circle-img" aria-hidden="true"></div>
+
+    <a class="telegram-btn" id="tgBtn" href="https://t.me/yourchannel" rel="noopener">🔇 ЗАГЛУШИТЬ ЗВУК</a>
+
+    <div class="hint" id="hint">Нажмите в любое место, чтобы запустить</div>
+    <div class="log" id="log"></div>
+
+    <!-- аудио (loop не убирал, но управление через скрипт) -->
+    <audio id="myAudio" preload="auto">
+      <source src="audio.mp3" type="audio/mpeg">
+      Ваш браузер не поддерживает аудио.
+    </audio>
+  </div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const audio = document.getElementById('myAudio');
+    const wrapper = document.getElementById('wrapper');
+    const tgBtn = document.getElementById('tgBtn');
+    const hint = document.getElementById('hint');
+    const log = document.getElementById('log');
+
+    let started = false;
+    let snowInterval = null;
+
+    // Функция для записи логов (показывается только в случае проблем — по умолчанию скрыта)
+    function showLog(msg) {
+      log.style.display = 'block';
+      log.textContent = msg;
+      console.log(msg);
+    }
 // безопасный запуск звука — возвращаем промис результата (если поддерживается)
     function playAudioSafe() {
       audio.loop = true;
@@ -112,3 +264,4 @@
 </script>
 </body>
 </html>
+
