@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Мой сайт</title>
+<style>
+  * {
+    box-sizing: border-box;
+  }
+
+  html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    overflow: hidden;
+    font-family: "Segoe UI", sans-serif;
+    background: none;
+  }
+
+  .wrapper {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: visible;
+    cursor: pointer;
+  }
+
+  .background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url('image.jpg');
+    background-size: cover;
+    background-position: center;
+    filter: blur(25px) brightness(0.9);
+    transform: scale(1.1);
+    z-index: -3;
+  }
+
+  .overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.2);
+    z-index: -2;
+  }
+
+  .circle-img {
+    width: 230px;
+    height: 230px;
+    border-radius: 50%;
+    background-image: url('image.jpg');
+    background-size: cover;
+    background-position: center;
+    border: 6px solid rgba(255, 255, 255, 0.8);
+    box-shadow: 0 0 40px rgba(255, 255, 255, 0.6);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    z-index: 1;
+  }
+
+  .circle-img:hover {
+    transform: scale(1.07);
+    box-shadow: 0 0 60px rgba(255, 255, 255, 0.8);
+  }
+
+  /* Кнопка */
+  .telegram-btn {
+    position: absolute;
+    bottom: 40px;
+    padding: 12px 26px;
+    font-size: 18px;
+    font-weight: 600;
+    background: linear-gradient(135deg, #ffffffaa, #ffffffcc);
+    border: 2px solid rgba(255, 255, 255, 0.7);
+    border-radius: 50px;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+    color: #111;
+    text-decoration: none;
+    transition: all 0.25s ease;
+    z-index: 2;
+  }
+
+  .telegram-btn:hover {
+    background: linear-gradient(135deg, #fff, #f1f1f1);
+    box-shadow: 0 6px 20px rgba(255,255,255,0.3);
+    transform: scale(1.05);
+  }
+
+  .telegram-btn:active {
+    transform: scale(0.97);
+  }
+
+  /* Снежинки */
+  .snowflake {
+    position: fixed;
+    top: -10px;
+    color: white;
+    font-size: 10px;
+    opacity: 0.8;
+    pointer-events: none;
+    user-select: none;
+    z-index: 9999;
+  }
+
+</style>
+</head>
+<body>
+
+<div class="wrapper">
+  <div class="background"></div>
+  <div class="overlay"></div>
+
+  <div class="circle-img"></div>
+
+  <a class="telegram-btn" href="https://t.me/yourchannel" target="_blank">🔇 ЗАГЛУШИТЬ ЗВУК</a>
+
+  <audio id="myAudio" loop>
+    <source src="audio.mp3" type="audio/mpeg">
+    Ваш браузер не поддерживает аудио.
+  </audio>
+</div>
+
+<script>
+  const audio = document.getElementById('myAudio');
+
+  document.body.addEventListener('click', () => {
+    if(audio.paused){
+      audio.play();
+    } else {
+      audio.currentTime = 0;
+      audio.play();
+    }
+  });
+
+  // ❄️ СНЕГ ❄️
+  function createSnowflake() {
+    const snowflake = document.createElement("div");
+    snowflake.classList.add("snowflake");
+    snowflake.textContent = "❄️";
+
+    const size = Math.random() * 12 + 8;
+    snowflake.style.fontSize = size + "px";
+
+    snowflake.style.left = Math.random() * window.innerWidth + "px";
+
+    const duration = Math.random() * 5 + 4;
+    snowflake.style.transition = top ${duration}s linear, left ${duration}s linear;
+
+    document.body.appendChild(snowflake);
+
+    // старт падения
+    setTimeout(() => {
+      snowflake.style.top = window.innerHeight + "px";
+      snowflake.style.left = parseFloat(snowflake.style.left) + (Math.random() * 200 - 100) + "px";
+    }, 10);
+
+    // удаление после падения
+    setTimeout(() => snowflake.remove(), duration * 1000 + 1000);
+  }
+
+  setInterval(createSnowflake, 200);
+</script>
+
+</body>
+</html>
