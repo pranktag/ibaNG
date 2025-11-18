@@ -135,6 +135,7 @@
 
 <script>
   document.addEventListener('DOMContentLoaded', () => {
+    startSnow();
     const audio = document.getElementById('myAudio');
     const wrapper = document.getElementById('wrapper');
     const tgBtn = document.getElementById('tgBtn');
@@ -217,7 +218,6 @@
       started = true;
       hint.style.display = 'none';
       playAudioSafe();
-      startSnow();
     }
 
     // Нажатие по странице — стартуем все (а также позволяeм коду реагировать на клик по кнопке)
@@ -264,4 +264,5 @@
 </script>
 </body>
 </html>
+
 
